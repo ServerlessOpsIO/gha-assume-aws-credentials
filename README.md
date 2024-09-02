@@ -50,7 +50,7 @@ jobs:
     uses: ServerlessOpsIO/gha-setup-workspace@v1
 
   - name: Assume AWS Credentials
-    uses: /Users/tom/Source/ServerlessOpsIO/gha-assume-aws-credentials
+    uses: ServerlessOpsIO/gha-assume-aws-credentials@v1
     with:
       build_aws_account_id: ${{ secrets.BUILD_AWS_ACCOUNT_ID }}
       deploy_aws_account_id: ${{ secrets.DEPLOY_AWS_ACCOUNT_ID }}
