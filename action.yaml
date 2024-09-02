@@ -1,0 +1,86 @@
+name: 'assume-aws-credentials'
+description: 'Assume AWS credentials'
+
+inputs:
+  build_aws_account_id:
+    description: Account ID of CI/CD account.
+    required: false
+    default: ''
+  deploy_aws_account_id:
+    description: Account ID of account to deploy to.
+    required: false
+  aws_account_region:
+    description: AWS region to deploy to
+    required: false
+    default: us-east-1
+  gha_build_role_name:
+    description: Name of GitHub Actions IAM role in build account
+    required: false
+    default: ''
+  gha_deploy_role_name:
+    description: Name of GitHub Actions IAM role in deployment account
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Set values
+      id: values
+      shell: bash
+      env:
+        DEFAULT_CICD_ACCOUNT_ID: secrets.AWS_CICD_ACCOUNT_ID
+        DEFAULT_CICD_BUILD_ROLE_NAME: secrets.AWS_CICD_BUILD_ROLE_NAME
+        DEFAULT_CICD_DEPLOY_ROLE_NAME: secrets.AWS_CICD_DEPLOY_ROLE_NAME
+      run: |
+        if [ -z "${{ inputs.build_aws_account_id }}" ]; then
+          echo "CICD_ACCOUNT_ID=${DEFAULT_CICD_ACCOUNT_ID}" >> $GITHUB_ENV
+        else
+          echo "CICD_ACCOUNT_ID=${{ inputs.build_aws_account_id }}" >> $GITHUB_ENV
+        fi
+
+        if [ -z "${{ inputs.gha_build_role_name }}" ]; then
+          echo "CICD_BUILD_ROLE_NAME=${DEFAULT_CICD_BUILD_ROLE_NAME}" >> $GITHUB_ENV
+        else
+          echo "CICD_BUILD_ROLE_NAME=${{ inputs.gha_build_role_name }}" >> $GITHUB_ENV
+        fi
+
+        if [ -z "${{ inputs.gha_deploy_role_name }}" ]; then
+          echo "CICD_DEPLOY_ROLE_NAME=${DEFAULT_CICD_DEPLOY_ROLE_NAME}" >> $GITHUB_ENV
+        else
+          echo "CICD_DEPLOY_ROLE_NAME=${{ inputs.gha_deploy_role_name }}" >> $GITHUB_ENV
+        fi
+
+    - name: Assume build account AWS credentials
+      id: build-account-credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::${{ env.CICD_ACCOUNT_ID }}:role/${{ env.CICD_BUILD_ROLE_NAME }}
+        role-session-name: ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG_URL }}-${{ github.run_number }}-${{ github.job }}
+        role-duration-seconds: 3600   # 60 minutes; needs to be less than our current max duration
+        aws-region: ${{ inputs.aws_account_region }}
+
+    - name: Assume deploy account AWS credentials
+      id: deploy-account-credentials
+      if: inputs.deploy_aws_account_id != null && inputs.deploy_aws_account_id != env.CICD_ACCOUNT_ID
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::${{ env.CICD_ACCOUNT_ID }}:role/${{ env.CICD_DEPLOY_ROLE_NAME }}
+        role-session-name: ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG_URL }}-${{ github.run_number }}-${{ github.job }}
+        role-duration-seconds: 3600   # 60 minutes; needs to be less than our current max duration
+        aws-region: ${{ inputs.aws_account_region }}
+        role-chaining: true
+
+outputs:
+  aws_build_account_id:
+    description: Account ID of build account
+    value: ${{ steps.build-account-credentials.outputs.aws-account-id }}
+  aws_deploy_account_id:
+    description: Account ID of deploy account
+    value: ${{ steps.deploy-account-credentials.outputs.aws-account-id }}
+  gha_build_role_name:
+    description: Name of GitHub Actions IAM role in build account
+    value: ${{ env.CICD_BUILD_ROLE_NAME }}
+  gha_deploy_role_name:
+    description: Name of GitHub Actions IAM role in deployment account
+    value: ${{ env.CICD_DEPLOY_ROLE_NAME }}
