@@ -29,9 +29,9 @@ runs:
       id: values
       shell: bash
       env:
-        DEFAULT_CICD_ACCOUNT_ID: secrets.AWS_CICD_ACCOUNT_ID
-        DEFAULT_CICD_BUILD_ROLE_NAME: secrets.AWS_CICD_BUILD_ROLE_NAME
-        DEFAULT_CICD_DEPLOY_ROLE_NAME: secrets.AWS_CICD_DEPLOY_ROLE_NAME
+        DEFAULT_CICD_ACCOUNT_ID: ${{ secrets.AWS_CICD_ACCOUNT_ID }}
+        DEFAULT_CICD_BUILD_ROLE_NAME: ${{ secrets.AWS_CICD_BUILD_ROLE_NAME }}
+        DEFAULT_CICD_DEPLOY_ROLE_NAME: ${{ secrets.AWS_CICD_DEPLOY_ROLE_NAME }}
       run: |
         if [ -z "${{ inputs.build_aws_account_id }}" ]; then
           echo "CICD_ACCOUNT_ID=${DEFAULT_CICD_ACCOUNT_ID}" >> $GITHUB_ENV
