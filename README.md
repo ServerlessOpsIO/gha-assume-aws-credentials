@@ -27,10 +27,10 @@ The `gha-assume-aws-credentials` action performs the following tasks:
 
 ## Outputs
 
-- `aws_build_account_id`: The AWS account ID of the build account.
-- `aws_deploy_account_id`: The AWS account ID of the deployment account.
-- `gha_build_role_name`: The name of the GitHub Actions IAM role in the build account.
-- `gha_deploy_role_name`: The name of the GitHub Actions IAM role in the deployment account.
+- `aws-build_account-id`: The AWS account ID of the build account.
+- `aws-deploy-account-id`: The AWS account ID of the deployment account.
+- `gha-build-role-name`: The name of the GitHub Actions IAM role in the build account.
+- `gha-deploy-role-name`: The name of the GitHub Actions IAM role in the deployment account.
 
 ## Usage
 

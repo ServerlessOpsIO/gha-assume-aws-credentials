@@ -52,15 +52,15 @@ runs:
         role-chaining: true
 
 outputs:
-  aws_build_account_id:
+  aws-build-account-id:
     description: Account ID of build account
     value: ${{ steps.build-account-credentials.outputs.aws-account-id }}
-  aws_deploy_account_id:
+  aws-deploy-account-id:
     description: Account ID of deploy account
     value: ${{ steps.deploy-account-credentials.outputs.aws-account-id }}
-  gha_build_role_name:
+  gha-build-role-name:
     description: Name of GitHub Actions IAM role in build account
     value: ${{ env.CICD_BUILD_ROLE_NAME }}
-  gha_deploy_role_name:
+  gha-deploy-role-name:
     description: Name of GitHub Actions IAM role in deployment account
     value: ${{ env.CICD_DEPLOY_ROLE_NAME }}
