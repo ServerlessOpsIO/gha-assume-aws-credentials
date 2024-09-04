@@ -29,10 +29,10 @@ runs:
       id: build-account-credentials
       uses: aws-actions/configure-aws-credentials@v4
       env:
-        CICD_ACCOUNT_ID: ${{ inputs.build_aws_account_id }}
-        CICD_BUILD_ROLE_NAME: ${{ inputs.gha_build_role_name }}
+        ACCOUNT_ID: ${{ inputs.build_aws_account_id }}
+        ROLE_NAME: ${{ inputs.gha_build_role_name }}
       with:
-        role-to-assume: arn:aws:iam::${{ env.CICD_ACCOUNT_ID }}:role/${{ env.CICD_BUILD_ROLE_NAME }}
+        role-to-assume: arn:aws:iam::${{ env.ACCOUNT_ID }}:role/${{ env.ROLE_NAME }}
         role-session-name: ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG_URL }}-${{ github.run_number }}-${{ github.job }}
         role-duration-seconds: 3600   # 60 minutes; needs to be less than our current max duration
         aws-region: ${{ inputs.aws_account_region }}
@@ -42,10 +42,10 @@ runs:
       if: inputs.deploy_aws_account_id != null && inputs.deploy_aws_account_id != inputs.build_aws_account_id
       uses: aws-actions/configure-aws-credentials@v4
       env:
-        CICD_ACCOUNT_ID: ${{ inputs.build_aws_account_id }}
-        CICD_DEPLOY_ROLE_NAME: ${{ inputs.gha_deploy_role_name }}
+        ACCOUNT_ID: ${{ inputs.deploy_aws_account_id }}
+        ROLE_NAME: ${{ inputs.gha_deploy_role_name }}
       with:
-        role-to-assume: arn:aws:iam::${{ env.CICD_ACCOUNT_ID }}:role/${{ env.CICD_DEPLOY_ROLE_NAME }}
+        role-to-assume: arn:aws:iam::${{ env.ACCOUNT_ID }}:role/${{ env.ROLE_NAME }}
         role-session-name: ${{ env.GITHUB_REPOSITORY_NAME_PART_SLUG_URL }}-${{ github.run_number }}-${{ github.job }}
         role-duration-seconds: 3600   # 60 minutes; needs to be less than our current max duration
         aws-region: ${{ inputs.aws_account_region }}
