@@ -46,20 +46,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-  - name: Checkout code
-    uses: ServerlessOpsIO/gha-setup-workspace@v1
+      - name: Checkout code
+        uses: ServerlessOpsIO/gha-setup-workspace@v1
 
-  - name: Assume AWS Credentials
-    uses: ServerlessOpsIO/gha-assume-aws-credentials@v1
-    with:
-      build_aws_account_id: ${{ secrets.BUILD_AWS_ACCOUNT_ID }}
-      deploy_aws_account_id: ${{ secrets.DEPLOY_AWS_ACCOUNT_ID }}
-      aws_account_region: 'us-east-1'
-      gha_build_role_name: ${{ secrets.GHA_BUILD_ROLE_NAME }}
-      gha_deploy_role_name: ${{ secrets.GHA_DEPLOY_ROLE_NAME }}
+      - name: Assume AWS Credentials
+        uses: ServerlessOpsIO/gha-assume-aws-credentials@v1
+        with:
+          build_aws_account_id: ${{ secrets.BUILD_AWS_ACCOUNT_ID }}
+          deploy_aws_account_id: ${{ secrets.DEPLOY_AWS_ACCOUNT_ID }}
+          aws_account_region: 'us-east-1'
+          gha_build_role_name: ${{ secrets.GHA_BUILD_ROLE_NAME }}
+          gha_deploy_role_name: ${{ secrets.GHA_DEPLOY_ROLE_NAME }}
 
-    - name: Run AWS CLI command
-      run: aws s3 ls
+        - name: Run AWS CLI command
+          run: aws s3 ls
 ```
 
 ## Contributing
