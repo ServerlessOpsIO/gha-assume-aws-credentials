@@ -43,7 +43,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  myJob:
+  deploy:
     runs-on: ubuntu-latest
 
     # Required for AWS credentials
@@ -59,11 +59,31 @@ jobs:
         uses: ServerlessOpsIO/gha-assume-aws-credentials@v1
         with:
           build_aws_account_id: ${{ secrets.BUILD_AWS_ACCOUNT_ID }}
+          aws_account_region: 'us-east-1'
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+
+    # Required for AWS credentials
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: ServerlessOpsIO/gha-setup-workspace@v1
+        with:
+          checkout_artifact: true
+
+      - name: Assume AWS Credentials
+        uses: ServerlessOpsIO/gha-assume-aws-credentials@v1
+        with:
+          build_aws_account_id: ${{ secrets.BUILD_AWS_ACCOUNT_ID }}
           deploy_aws_account_id: ${{ secrets.DEPLOY_AWS_ACCOUNT_ID }}
           aws_account_region: 'us-east-1'
-          gha_build_role_name: ${{ secrets.GHA_BUILD_ROLE_NAME }}
-          gha_deploy_role_name: ${{ secrets.GHA_DEPLOY_ROLE_NAME }}
-
 ```
 
 ## Contributing
