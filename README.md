@@ -10,14 +10,15 @@ To understand more about how the GHA -> AWS integration works see [ServerlessOps
 
 _*NOTE: This workflow is opinionated and meets the needs of its author. It is provided publicly as a reference for others to use and modify as needed.*_
 
-## Description
-
 The `gha-assume-aws-credentials` action performs the following tasks:
 1. Sets environment variables based on input values or defaults.
 2. Assumes AWS credentials for the build account.
 3. Optionally assumes AWS credentials for the deploy account if specified.
 
-## Inputs
+## Usage
+See below for inouts, outputs, and examples.
+
+### Inputs
 
 - `build_aws_account_id` (optional): Account ID of the CI/CD account. Default is an empty string.
 - `deploy_aws_account_id` (optional): Account ID of the account to deploy to.
@@ -25,15 +26,15 @@ The `gha-assume-aws-credentials` action performs the following tasks:
 - `gha_build_role_name` (optional): Name of the GitHub Actions IAM role in the build account. Default is an empty string.
 - `gha_deploy_role_name` (optional): Name of the GitHub Actions IAM role in the deployment account. Default is an empty string.
 
-## Outputs
+### Outputs
 
 - `aws-build_account-id`: The AWS account ID of the build account.
 - `aws-deploy-account-id`: The AWS account ID of the deployment account.
 - `gha-build-role-name`: The name of the GitHub Actions IAM role in the build account.
 - `gha-deploy-role-name`: The name of the GitHub Actions IAM role in the deployment account.
 
-## Usage
 
+### Examples
 To use this action, add the following step to your workflow:
 
 ```yaml
@@ -42,8 +43,13 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build:
+  myJob:
     runs-on: ubuntu-latest
+
+    # Required for AWS credentials
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout code
@@ -58,8 +64,6 @@ jobs:
           gha_build_role_name: ${{ secrets.GHA_BUILD_ROLE_NAME }}
           gha_deploy_role_name: ${{ secrets.GHA_DEPLOY_ROLE_NAME }}
 
-        - name: Run AWS CLI command
-          run: aws s3 ls
 ```
 
 ## Contributing
