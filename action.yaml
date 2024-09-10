@@ -4,8 +4,7 @@ description: 'Assume AWS credentials'
 inputs:
   build_aws_account_id:
     description: Account ID of CI/CD account.
-    required: false
-    default: ''
+    required: true
   deploy_aws_account_id:
     description: Account ID of account to deploy to.
     required: false
@@ -16,11 +15,11 @@ inputs:
   gha_build_role_name:
     description: Name of GitHub Actions IAM role in build account
     required: false
-    default: ''
+    default: 'GitHubActionsBuildRole'
   gha_deploy_role_name:
     description: Name of GitHub Actions IAM role in deployment account
     required: false
-    default: ''
+    default: 'GitHubActionsCfnDeployRole'
 
 runs:
   using: composite
