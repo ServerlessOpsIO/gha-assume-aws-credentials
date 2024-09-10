@@ -16,7 +16,7 @@ The `gha-assume-aws-credentials` action performs the following tasks:
 3. Optionally assumes AWS credentials for the deploy account if specified.
 
 ## Usage
-See below for inouts, outputs, and examples.
+See below for inputs, outputs, and examples.
 
 ### Inputs
 
