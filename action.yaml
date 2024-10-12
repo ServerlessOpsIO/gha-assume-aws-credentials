@@ -38,7 +38,7 @@ runs:
 
     - name: Assume deploy account AWS credentials
       id: deploy-account-credentials
-      if: inputs.deploy_aws_account_id != null && inputs.deploy_aws_account_id != inputs.build_aws_account_id
+      if: inputs.deploy_aws_account_id != null
       uses: aws-actions/configure-aws-credentials@v4
       env:
         ACCOUNT_ID: ${{ inputs.deploy_aws_account_id }}
