@@ -8,7 +8,7 @@ Defaults for account IDs and IAM roles are set via GitHub organization secrets i
 
 To understand more about how the GHA -> AWS integration works see [ServerlessOps/aws-gha-integration](https://github.com/ServerlessOpsIO/aws-gha-integration).
 
-_*NOTE: This workflow is opinionated and meets the needs of its author. It is provided publicly as a reference for others to use and modify as needed.*_
+_**NOTE: This workflow is opinionated and meets the needs of its author. It is provided publicly as a reference for others to use and modify as needed.**_
 
 The `gha-assume-aws-credentials` action performs the following tasks:
 1. Sets environment variables based on input values or defaults.
