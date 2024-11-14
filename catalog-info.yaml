@@ -1,0 +1,13 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: gha-assume-aws-credentials
+  description: GitHub Action composite to assume AWS credentials
+  annotations:
+    github.com/project-slug: ServerlessOpsIO/gha-assume-aws-credentials
+spec:
+  type: gha-action
+  lifecycle: production
+  owner: group:developers
+  system: system:github-actions
