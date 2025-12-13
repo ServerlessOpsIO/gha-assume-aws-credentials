@@ -26,7 +26,7 @@ runs:
   steps:
     - name: Assume build account AWS credentials
       id: build-account-credentials
-      uses: aws-actions/configure-aws-credentials@v4
+      uses: aws-actions/configure-aws-credentials@v5
       env:
         ACCOUNT_ID: ${{ inputs.build_aws_account_id }}
         ROLE_NAME: ${{ inputs.gha_build_role_name }}
@@ -39,7 +39,7 @@ runs:
     - name: Assume deploy account AWS credentials
       id: deploy-account-credentials
       if: inputs.deploy_aws_account_id != null
-      uses: aws-actions/configure-aws-credentials@v4
+      uses: aws-actions/configure-aws-credentials@v5
       env:
         ACCOUNT_ID: ${{ inputs.deploy_aws_account_id }}
         ROLE_NAME: ${{ inputs.gha_deploy_role_name }}
